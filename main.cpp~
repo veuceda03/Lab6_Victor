@@ -11,6 +11,9 @@ using std::cin;
 bool eliminarUsuario(string,vector<User>&); 
 void ingresarGame(int,vector<Game>&);
 bool eliminarGame(int,vector<Game>&);
+bool validarUser(string,string,vector<User>&);
+int recibirUser(string,string,vector<User>&);
+bool validarId(int,vector<Game>&);
 
 int main(int argc,char* argv[]){
 	int opcion;
@@ -51,7 +54,59 @@ int main(int argc,char* argv[]){
 				}
 			}while(ver==true);
 		}else if(opcion==2){
-
+			string username,password;
+			cout<<"Ingrese un username: ";
+			cin >> username;
+			cout<<"Ingrese un password: ";
+			cin >> password;
+			if(validarUser(username,password,listado)==true){
+				int opc;
+				cout<<"1: Agregar juego"	      <<endl
+		   		    <<"2: Eliminar juego"	      <<endl
+		                    <<"3: Modificar contraseña"	      <<endl;
+				cin >> opc;
+				int pos=recibirUser(username,password,listado);
+				if(opc==1){
+					cout << "Lista de juegos disponibles" <<endl;
+					for(int i=0;i<inventario.size();i++){
+						cout<<inventario[i].toString()<<endl;
+					}
+					int id;
+					cout << "Id del juego a agregar: ";
+					cin >> id;
+					if(validarId(id,inventario)==true){
+						listado[pos].addGame(id);
+						cout << "Juego agregado" << endl;
+					}else{
+						cout << "Id no valido" <<endl;
+					}
+				}else if(opc==2){
+					bool esta;
+					int posgame;
+					int id;
+					for(int i=0;i<(listado[pos].getInventario().size());i++){
+						cout<<listado[pos].getInventario()[i]<<endl;
+					}
+					cout << "Id del juego a eliminar: ";
+					cin >> id;
+					for(int i=0;i<(listado[pos].getInventario().size());i++){
+						esta=listado[pos].deleteGame(id);
+						if(esta==true){
+							cout << "Juego eliminado" << endl;
+							break;
+						}
+					}	
+				}else if(opc==3){
+					cout<<"Ingrese su password: ";
+					cin >> password;
+					string nuevopass;
+					cout<<"Ingrese su nuevo password: ";
+					cin >> nuevopass;
+					lista[pos].changePassword(password,nuevopass);
+				}
+			}else{
+				cout << "Los datos no son válidos" <<endl;
+			}			
 		}else if(opcion==3){
 			string username,password;
 			cout<<"Ingrese un username: ";
@@ -88,7 +143,12 @@ int main(int argc,char* argv[]){
 			int id;
 			cout << "Ingrese el Id: ";
 			cin >> id; 	
-	
+			bool elim=eliminarGame(id,inventario);
+			if(elim==true){
+				cout << "Juego eliminado del inventario" << endl;
+			}else{
+				cout << "Id ingresado no registrado" <<endl;
+			}
 		}else if(opcion==6){
 			cout << "Lista de juegos" << endl;
 			cout << "ID	Nombre	  Año	  Developers   	Género" << endl;
@@ -146,6 +206,36 @@ bool eliminarGame(int id,vector<Game>& inventario){
 	for(int i=0;i<inventario.size();i++){
 		if(inventario[i].getId() == id){
 			inventario.erase(inventario.begin() + i);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool validarUser(string user,string pass,vector<User>& listado){
+	bool esvalido;
+	for(int i=0;i<listado.size();i++){
+		esvalido=listado[i].isValidPassword(user,pass);
+		if(esvalido==true){
+			return true;
+		}
+	}
+	return false;
+}
+
+int recibirUser(string user ,string pass,vector<User>& listado){
+	bool esvalido;	
+	for(int i=0;i<listado.size();i++){
+		esvalido=listado[i].isValidPassword(user,pass);
+		if(esvalido==true){
+			return i;
+		}
+	}
+}
+
+bool validarId(int id,vector<Game>& inventario){
+	for(int i=0;i<inventario.size();i++){
+		if(inventario[i].getId() == id){
 			return true;
 		}
 	}

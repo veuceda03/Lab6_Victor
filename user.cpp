@@ -21,18 +21,28 @@ bool User::deleteGame(int id){
 	return false;
 }
 
-void User::changePassword(string password){
-	this->password=password;
+void User::changePassword(string pass,string passw){
+	if(pass==password){
+		this->password=passw;
+	}
 }
 
 string User::getUsername(){
 	return username;
 }
 
-bool User::isValidPassword(string username , string password){
-	return false;
+bool User::isValidPassword(string user , string pass){
+	if(username==user && password==pass){
+		return true;
+	}else{
+		return false;
+	}
 }
 	
 string User::toString() const{
 	return username;
+}
+
+vector<int> User::getInventario(){
+	return games;
 }

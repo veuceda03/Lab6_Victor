@@ -4,6 +4,7 @@
 #include <sstream>
 #include <vector>
 #include <cstring>
+#include <cstdlib>
 
 using std::string;
 using std::vector;
@@ -20,6 +21,6 @@ class User{
 	void changePassword(string );
 	string getUsername();
 	bool isValidPassword(string username , string password);
-	string toString() const;	
-	
+	string toString() const;
+	vector<int> getInventario();
 };

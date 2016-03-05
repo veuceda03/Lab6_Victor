@@ -18,9 +18,9 @@ class User{
 	User(string , string);
 	bool addGame(int id);
 	bool deleteGame(int id);
-	void changePassword(string );
+	void changePassword(string,string);
 	string getUsername();
 	bool isValidPassword(string username , string password);
-	string toString() const;	
-	
+	string toString() const;
+	vector<int> getInventario();
 };
